@@ -51,7 +51,7 @@ pre{background:#0f1520;border:1px solid var(--line);border-radius:8px;padding:8p
 .sheet{position:fixed;inset:0;background:rgba(0,0,0,.6);display:flex;align-items:flex-end;justify-content:center;z-index:30}
 .sheetin{background:var(--panel);width:100%;max-width:560px;border-radius:18px 18px 0 0;padding:14px;max-height:85vh;overflow:auto}
 .sheetin>.cd{margin:0 auto;flex-basis:auto;width:200px;min-height:240px;font-size:13px}.sbtns{margin-top:8px}
-.curtain{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:24px;text-align:center}.curtain .btn{max-width:340px}
+.curtain{min-height:100dvh;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:24px;text-align:center}.curtain .btn{max-width:340px}
 .log div{padding:6px 0;border-bottom:1px solid var(--line);font-size:13.5px}.rules{font-size:14px}.rules h2{font-size:18px;color:var(--acc)}.rules li{margin:4px 0}
 #toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%) translateY(80px);background:#111827;border:1px solid var(--acc);padding:10px 14px;border-radius:12px;transition:.25s;z-index:40;max-width:90vw;font-size:14px}
 #toast.on{transform:translateX(-50%) translateY(0)}
@@ -100,8 +100,8 @@ pre{background:#0f1520;border:1px solid var(--line);border-radius:8px;padding:8p
 @media (orientation:landscape) and (min-width:560px){
   .wrap.game{max-width:none;padding:4px 10px calc(var(--fh) + 8px)}
   .gl{display:grid;grid-template-columns:minmax(0,1fr) minmax(290px,36%);gap:10px;align-items:start}
-  .gside{max-height:calc(100vh - var(--fh) - 48px);overflow:auto;padding-right:4px}
-  .board{max-height:calc(100vh - var(--fh) - 64px)}
+  .gside{max-height:calc(100dvh - var(--fh) - 48px);overflow:auto;padding-right:4px}
+  .board{max-height:calc(100dvh - var(--fh) - 64px)}
   .tabs{margin-bottom:4px}.tabs button{padding:5px}.top{font-size:13px}
   .fchips{grid-template-columns:repeat(auto-fill,minmax(88px,1fr));gap:6px}.dial svg{width:58px;height:58px}
   .rotate{display:none}
@@ -110,7 +110,7 @@ pre{background:#0f1520;border:1px solid var(--line);border-radius:8px;padding:8p
 .topbar{display:flex;align-items:center;gap:8px;margin-bottom:4px}.topbar .st{margin-left:auto;font-size:12.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .mini-tabs{margin:0!important;flex:0 1 auto}.mini-tabs button{flex:0 0 auto!important;padding:4px 9px!important;font-size:12px;border-radius:8px}
 .bwrap{position:relative;width:fit-content;max-width:100%;margin:0 auto}.bwrap.full{width:100%}
-.wrap.game .board{max-height:calc(100vh - var(--fh) - 44px)!important;width:auto;max-width:100%;margin:0 auto}
+.wrap.game .board{max-height:calc(100dvh - var(--fh) - 44px)!important;width:auto;max-width:100%;margin:0 auto}
 .bwrap .b3wrap.flat{margin:0}
 .bacts{position:absolute;left:6px;bottom:6px;display:flex;gap:4px;flex-wrap:wrap;z-index:6;align-items:center}
 .bacts .mini{background:#141a26e8;border-color:#3b4660;padding:6px 10px;font-size:12.5px}.bacts .mini:disabled{opacity:.4}
@@ -118,7 +118,7 @@ pre{background:#0f1520;border:1px solid var(--line);border-radius:8px;padding:8p
 .bchips{position:absolute;left:6px;top:6px;display:flex;flex-direction:column;gap:4px;z-index:6;align-items:flex-start;max-width:60%}
 .bchip{background:#141a26e8;border:1px solid #3b4660;color:var(--tx);border-radius:8px;padding:4px 8px;font:12px system-ui;text-align:left}
 .bchip.ong{border-color:#eab308}.bchip.cmb{border-color:#e05252;background:#2a1420e8}
-.combatfloat{position:fixed;left:50%;top:40px;transform:translateX(-50%);width:min(560px,96vw);max-height:calc(100vh - var(--fh) - 50px);overflow:auto;z-index:18;box-shadow:0 10px 40px rgba(0,0,0,.6);border-radius:14px}
+.combatfloat{position:fixed;left:50%;top:40px;transform:translateX(-50%);width:min(560px,96vw);max-height:calc(100dvh - var(--fh) - 50px);overflow:auto;z-index:18;box-shadow:0 10px 40px rgba(0,0,0,.6);border-radius:14px}
 .combatfloat .combat{margin:0}
 .drawerbg{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:21}
 .drawer{position:fixed;top:0;right:0;bottom:0;width:min(380px,90vw);background:var(--bg);border-left:1px solid var(--line);z-index:22;overflow:auto;padding:10px 12px 20px}
@@ -204,21 +204,21 @@ html,body{overscroll-behavior:none}
 .rotwrap{display:flex;justify-content:center;transition:transform .25s ease;transform-origin:50% 50%}
 .fxbar{top:auto;bottom:calc(var(--fh) + 26px)}
 @media (orientation:landscape) and (max-height:560px){
- .fxbar{left:auto;right:8px;transform:none;top:128px;bottom:auto;width:min(30vw,280px);font-size:12.5px;padding:7px 9px;max-height:calc(100vh - 140px);overflow:hidden}
+ .fxbar{left:auto;right:8px;transform:none;top:128px;bottom:auto;width:min(30vw,280px);font-size:12.5px;padding:7px 9px;max-height:calc(100dvh - 140px);overflow:hidden}
  .fxbar button{padding:6px 10px!important;font-size:13px!important;margin:4px 6px 0 0}
  .sheet{align-items:center}
  .sheetin{max-width:min(96vw,900px);border-radius:16px;max-height:96vh}
  .sheetin.cardsheet{display:flex;flex-direction:row;align-items:center;gap:16px;width:auto}
  .sheetin.cardsheet>.cd.art{width:calc((96vh - 30px)/1.397);flex:0 0 auto}
  .sheetin.cardsheet .sbtns{display:flex;flex-direction:column;gap:8px;min-width:200px}
- .combatfloat{top:34px;max-height:calc(100vh - var(--fh) - 40px);width:min(900px,96vw);z-index:22}
- .combatfloat.rev{max-height:calc(100vh - 40px)}
- .combatfloat:not(.rev) .reveal .cd.back{width:calc((100vh - var(--fh) - 110px)/1.397)}
+ .combatfloat{top:34px;max-height:calc(100dvh - var(--fh) - 40px);width:min(900px,96vw);z-index:22}
+ .combatfloat.rev{max-height:calc(100dvh - 40px)}
+ .combatfloat:not(.rev) .reveal .cd.back{width:calc((100dvh - var(--fh) - 110px)/1.397)}
  .combat{display:grid;grid-template-columns:auto 1fr;column-gap:14px;align-items:start}
  .combat>h3,.combat>.chead{grid-column:1/-1}
  .combat>.reveal{grid-column:1;grid-row:2/span 8;margin:0}
  .combat>*:not(h3):not(.reveal):not(.chead){grid-column:2}
- .combat .reveal .cd.art,.combat .reveal .cd.back,.combat .reveal .cd.empty{width:calc((100vh - 120px)/1.397);max-width:150px}
+ .combat .reveal .cd.art,.combat .reveal .cd.back,.combat .reveal .cd.empty{width:calc((100dvh - 120px)/1.397);max-width:150px}
 }
 .sheetin{max-height:100dvh}
 .sheetin.cardsheet>.cd.art{width:min(280px,78vw,calc((100dvh - 80px - var(--nb,2)*56px)/1.397));margin:0 auto}
@@ -232,6 +232,12 @@ html,body{overscroll-behavior:none}
 .flash .frow{display:flex;gap:8px;justify-content:center;flex-wrap:nowrap}
 .flash .cd.art{width:var(--flw,150px);flex:0 0 var(--flw,150px)}
 .flash .fback{width:var(--flw,90px);aspect-ratio:320/447;border-radius:8px;background-size:cover;background-position:center}
+
+
+.combat .reveal .cd.back,.combat .reveal .cd.empty{aspect-ratio:320/447;min-height:0;height:auto}
+@media (max-height:420px){.combat{padding:8px}.combat h3{margin:0 0 4px;font-size:15px}.combat p{margin:3px 0;font-size:13px}.combat .btn{padding:8px 12px;margin-top:4px}.combat .calc{margin:4px 0;padding:6px 8px}.sheetin{padding:10px}.sheetin h3{margin:0 0 4px}.sheetin p{margin:2px 0 6px}.sbtns .btn{padding:9px 12px}}
+body.ingame{overflow:hidden;overscroll-behavior:none;position:fixed;inset:0}
+html:has(body.ingame){overflow:hidden}
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
@@ -1581,10 +1587,10 @@ let toastT;function toast(m){const t=document.getElementById('toast');if(!t)retu
 const app=()=>document.getElementById('app');
 function render(){const a=app();if(!a)return;
   if(!S.pub){a.innerHTML=S.ui.homeHeroes?`<div class="wrap"><button class="mini" data-a="homeback">← Home</button>${renderHeroes()}</div><div id="toast"></div>`:renderHome();return;}
-  if(S.pub.status==='lobby'){a.innerHTML=renderLobby();return;}
+  document.body.classList.remove('ingame');if(S.pub.status==='lobby'){a.innerHTML=renderLobby();fitPanels();return;}
   {const key=S.pub.gameId||'g';if(S.pub.status==='play'&&(S.pub.turn||{}).n<=1&&S.ui.qrKey!==key&&(!navigator.webdriver||window.__forceQR)){S.ui.qrKey=key;S.ui.view='quick';}}
   {const sh=S.pub.shown;const k=sh&&sh.card?(sh.seat+':'+(sh.card.id||sh.card.name)):null;if(k&&S.ui.shownKey!==k){const first=S.ui.shownKey===undefined;S.ui.shownKey=k;if(!first&&!(online()?S.mySeat===sh.seat:viewSeat()===sh.seat))setTimeout(()=>flashShow(`${seatName(sh.seat)} played`,[sh.card],{ms:3500}),0);}else if(!k)S.ui.shownKey=null;}
-  a.innerHTML=renderGame();mount3d();applyLock();setTimeout(()=>{try{autoEndCheck();autoResolveCheck();}catch(e){console.error(e);}},0);}
+  document.body.classList.add('ingame');a.innerHTML=renderGame();fitPanels();mount3d();applyLock();setTimeout(()=>{try{autoEndCheck();autoResolveCheck();}catch(e){console.error(e);}},0);}
 
 function defTheme(def){ensureLib(def.hero.name);const L=LIB[heroSlug(def.hero.name)]||{};const color=L.color||def.color||'#64748b';
   return {color,back:L.back||def.back||genArt('back',def.hero.name,color),piece:L.piece||def.piece||genArt('tok',def.hero.name,color),side:L.side||def.side||(def.sidekick?genArt('tok',def.sidekick.name,shade(color,-25)):null)};}
@@ -2465,6 +2471,13 @@ function fxHint(){const fx=S.ui.fx;if(!fx||fx.kind==='cards'||fx.kind==='opts')r
   const btn=fx.noSkip?'':(fx.kind==='manual'||fx.kind==='multi'||(fx.kind==='tok'&&fx.multi)?'Done':(fx.skip===false?'End':'Skip'));
   return h+(btn?` <button class="mini" data-a="x_skip">${btn}</button>`:'');}
 function pickW(n){const W=Math.min(innerWidth*0.96,900)-30,H=innerHeight-(innerHeight<560?150:210);let best=60;for(let cols=1;cols<=Math.max(1,n);cols++){const rows=Math.ceil(n/cols);const w=Math.min((W-8*(cols-1))/cols,(H-8*(rows-1))/rows/1.397,210);if(w>best)best=w;}return Math.floor(best);}
+function fitPanels(){try{
+  const shrink=(box,sel,minW)=>{if(!box)return;const els=[...box.querySelectorAll(sel)];if(!els.length)return;let guard=0;
+    while(box.scrollHeight>box.clientHeight+1&&guard++<30){let any=false;for(const e of els){const w=e.getBoundingClientRect().width;if(w>minW){e.style.width=e.style.flexBasis=Math.floor(w*0.92)+'px';e.style.maxWidth='none';any=true;}}if(!any)break;}};
+  document.querySelectorAll('.sheetin').forEach(b=>shrink(b,'.cd.art,.cd.back,.opt img,.herocard,.mzrow img',60));
+  document.querySelectorAll('.combatfloat').forEach(b=>shrink(b,'.reveal .cd',50));
+  const f=document.querySelector('.flash');if(f){let g=0;while((f.getBoundingClientRect().height>innerHeight*0.9||f.getBoundingClientRect().width>innerWidth*0.96)&&g++<20){f.querySelectorAll('.cd,.fback').forEach(e=>{const w=e.getBoundingClientRect().width;e.style.width=e.style.flexBasis=Math.floor(w*0.9)+'px';});}}
+}catch(e){console.error(e);}}
 function renderFxCards(){const fx=S.ui.fx;if(fx&&fx.kind==='opts'){const sel=fx.sel||[];const ok=sel.length>=fx.min&&sel.length<=fx.max;
     return `<div class="sheet"><div class="sheetin" style="${innerHeight<560?'max-width:min(96vw,900px)':''}"><h3>${esc(fx.title)}</h3><p class="muted small">${esc(fx.label)}</p><div class="optgrid">${fx.opts.map(o=>`<button class="opt${sel.includes(o.id)?' on':''}" data-a="x_opt" data-c="${esc(o.id)}">${o.img?`<img src="${esc(o.img)}" alt="">`:''}<span>${esc(o.label)}</span></button>`).join('')}</div>
      <div class="sbtns"><button class="btn pri" data-a="x_ok" ${ok?'':'disabled'}>Confirm${fx.max>1?` (${sel.length}/${fx.max})`:''}</button></div></div></div>`;}
