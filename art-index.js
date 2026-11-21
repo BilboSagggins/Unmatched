@@ -1,1 +1,1 @@
-window.__artIndex={"v":"a8c87a7941","packs":[{"file":"art-1.js"},{"file":"art-2.js"},{"file":"art-3.js"},{"file":"art-4.js"},{"file":"art-5.js"}]};
+window.__artIndex={"v":"11ec8d946a","packs":[{"file":"art-1.js"},{"file":"art-2.js"},{"file":"art-3.js"},{"file":"art-4.js"},{"file":"art-5.js"},{"file":"art-6.js"}]};

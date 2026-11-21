@@ -48,7 +48,7 @@ pre{background:#0f1520;border:1px solid var(--line);border-radius:8px;padding:8p
 .combat{background:#1a1420;border:1px solid #6b2f4a;border-radius:14px;padding:10px;margin:8px 0}.reveal{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
 .mod{text-align:center;font-size:12px;margin-top:4px}.mod button{width:30px;height:28px;margin:0 6px;border-radius:8px;border:1px solid var(--line);background:#0f1520;color:#fff}
 .shown{background:var(--panel);border-radius:12px;padding:8px;margin:8px 0;display:flex;gap:10px;align-items:center}
-.sheet{position:fixed;inset:0;background:rgba(0,0,0,.6);display:flex;align-items:flex-end;justify-content:center;z-index:20}
+.sheet{position:fixed;inset:0;background:rgba(0,0,0,.6);display:flex;align-items:flex-end;justify-content:center;z-index:30}
 .sheetin{background:var(--panel);width:100%;max-width:560px;border-radius:18px 18px 0 0;padding:14px;max-height:85vh;overflow:auto}
 .sheetin>.cd{margin:0 auto;flex-basis:auto;width:200px;min-height:240px;font-size:13px}.sbtns{margin-top:8px}
 .curtain{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:24px;text-align:center}.curtain .btn{max-width:340px}
@@ -198,6 +198,40 @@ pre{background:#0f1520;border:1px solid var(--line);border-radius:8px;padding:8p
 .mzsize{display:flex;align-items:center;gap:10px;justify-content:center;margin-top:8px}.mzsize img{height:70px}
 .deckgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;padding-top:6px}.deckgrid .cd{width:100%;min-height:200px}
 .bwrap.ctrl{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:10px;overflow:auto;flex:1}.ctrl .ctrlmats{display:flex;gap:14px;flex-wrap:wrap;justify-content:center}.ctrl .fchips{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}.ctrl .ctrlmats{flex-direction:column;align-items:center;gap:22px;margin:14px 0}.ctrl .mmat{transform:scale(1.4);transform-origin:center}.tvback{position:absolute;right:8px;bottom:8px;z-index:5}.tv .tvfoot{position:fixed;left:0;right:0;bottom:0;display:flex;gap:16px;align-items:flex-end;justify-content:space-between;padding:8px 14px;pointer-events:none}.tv .tvfoot .fchips{display:flex;gap:8px;flex-wrap:wrap}.tv .tvlog{font-size:14px;color:#cbd5e1;max-width:45vw;text-align:right;background:rgba(0,0,0,.45);padding:6px 10px;border-radius:8px}.tv .combatfloat.tvc{pointer-events:none}.tvcode{font-size:22px}
+
+/* ---- no-scroll layout ---- */
+html,body{overscroll-behavior:none}
+.rotwrap{display:flex;justify-content:center;transition:transform .25s ease;transform-origin:50% 50%}
+.fxbar{top:auto;bottom:calc(var(--fh) + 26px)}
+@media (orientation:landscape) and (max-height:560px){
+ .fxbar{left:auto;right:8px;transform:none;top:128px;bottom:auto;width:min(30vw,280px);font-size:12.5px;padding:7px 9px;max-height:calc(100vh - 140px);overflow:hidden}
+ .fxbar button{padding:6px 10px!important;font-size:13px!important;margin:4px 6px 0 0}
+ .sheet{align-items:center}
+ .sheetin{max-width:min(96vw,900px);border-radius:16px;max-height:96vh}
+ .sheetin.cardsheet{display:flex;flex-direction:row;align-items:center;gap:16px;width:auto}
+ .sheetin.cardsheet>.cd.art{width:calc((96vh - 30px)/1.397);flex:0 0 auto}
+ .sheetin.cardsheet .sbtns{display:flex;flex-direction:column;gap:8px;min-width:200px}
+ .combatfloat{top:34px;max-height:calc(100vh - var(--fh) - 40px);width:min(900px,96vw);z-index:22}
+ .combatfloat.rev{max-height:calc(100vh - 40px)}
+ .combatfloat:not(.rev) .reveal .cd.back{width:calc((100vh - var(--fh) - 110px)/1.397)}
+ .combat{display:grid;grid-template-columns:auto 1fr;column-gap:14px;align-items:start}
+ .combat>h3,.combat>.chead{grid-column:1/-1}
+ .combat>.reveal{grid-column:1;grid-row:2/span 8;margin:0}
+ .combat>*:not(h3):not(.reveal):not(.chead){grid-column:2}
+ .combat .reveal .cd.art,.combat .reveal .cd.back,.combat .reveal .cd.empty{width:calc((100vh - 120px)/1.397);max-width:150px}
+}
+.sheetin{max-height:100dvh}
+.sheetin.cardsheet>.cd.art{width:min(280px,78vw,calc((100dvh - 80px - var(--nb,2)*56px)/1.397));margin:0 auto}
+.combat .reveal .cd.art,.combat .reveal .cd.empty{width:min(150px,38vw)}
+.pickgrid{max-height:none!important;overflow:visible!important;justify-content:center;gap:8px}
+.pickgrid .cd.art{width:var(--pw,120px);flex:0 0 var(--pw,120px)}
+.flash{position:fixed;left:50%;top:44%;transform:translate(-50%,-50%);transition:opacity .3s;z-index:60;pointer-events:none;background:#0b0f17e8;border:1px solid var(--acc);border-radius:16px;padding:10px 12px;box-shadow:0 12px 40px rgba(0,0,0,.7);text-align:center;max-width:96vw}
+.flash.drew{top:auto;bottom:calc(var(--fh) + 8px);transform:translateX(-50%);padding:6px 8px;border-color:#64748b}
+.flash.drew h4{font-size:12.5px;margin-bottom:5px}
+.flash h4{margin:0 0 8px;font-size:15px;color:var(--acc)}
+.flash .frow{display:flex;gap:8px;justify-content:center;flex-wrap:nowrap}
+.flash .cd.art{width:var(--flw,150px);flex:0 0 var(--flw,150px)}
+.flash .fback{width:var(--flw,90px);aspect-ratio:320/447;border-radius:8px;background-size:cover;background-position:center}
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
@@ -1249,8 +1283,8 @@ function startGame(){
   log('Game started. Sidekicks were placed near their heroes — use Free move to adjust before the first action.');
 }
 function drawCards(seat,n){const pr=S.priv[seat];let exhausted=0;if(S.pub.status==='play'&&((S.pub.turn||{}).noDraw||{})[seat]){log(`${seatName(seat)} can't draw cards this turn.`);return;}
-  for(let i=0;i<n;i++){if(!pr.deck.length){exhausted++;continue;}pr.hand.push(pr.deck.shift());}
-  privSave(seat);
+  const got=[];for(let i=0;i<n;i++){if(!pr.deck.length){exhausted++;continue;}const q=pr.deck.shift();pr.hand.push(q);got.push(q);}
+  privSave(seat);if(got.length&&!S.ui.noFlash&&S.pub.status==='play'&&mySeats().includes(seat)&&(online()||viewSeat()===seat))flashShow(online()?'You drew':`${seatName(seat)} drew`,got,{drew:true,ms:2000});
   if(exhausted){const patch={};for(const [id,f] of Object.entries(fighters()))if(f.seat===seat&&f.space)patch[id]={hp:floorHp(id,Math.max(0,f.hp-2*exhausted))};
     pubUpdate({fighters:patch});log(`${seatName(seat)} is exhausted (empty deck): each of their fighters takes ${2*exhausted} damage.`);onDealt(heroId(seat),2*exhausted);checkDefeats();}
 }
@@ -1324,6 +1358,20 @@ function checkDefeats(){const patch={};let msgs=[];const bonds=[];
   if(!S.pub.winner&&S.pub.status==='play')for(const s of SEATS){if((S.pub.shieldPend||{})[s]||trk(s).resPending||apotsHold(s))continue;const heroes=Object.values(fighters()).filter(f=>f.seat===s&&f.kind==='hero');
     if(heroes.length&&heroes.every(f=>f.hp<=0)){pubUpdate({winner:OPP[s],status:'over'});log(`${heroOf(s).hero.name} was defeated — ${seatName(OPP[s])} wins!`);break;}}
 }
+function autoResolveCheck(){const c=S.pub&&S.pub.combat;if(!c||c.stage!=='choose'||!c.atkCard||!c.defRevealed||!mySeats().includes(c.attacker)||showManual())return;
+  if(S.ui.fx||(S.ui.fxq||[]).length||S.ui.curtain)return;const r=combatCalc(c);if(r.waiting)return;
+  if(r.selfBoost&&!c.nsBoost&&handOf(c.attacker).length&&S.ui.nsAsk!==c.id){S.ui.nsAsk=c.id;const seat=c.attacker;const pr=S.priv[seat];
+    pushFx({kind:'cards',title:`${c.atkCard.name}: boost this attack?`,label:'You may discard one card from your hand and add its BOOST value to this attack.',cards:pr.hand.slice(),min:0,max:1,okLabel:'Boost',skipLabel:'No boost',
+      then:(ids)=>{if(!ids[0])return;const b=removeFromHand(seat,ids[0]);privSave(seat);discardCard(seat,b,`${seatName(seat)} boosts ${c.atkCard.name} +${b.boost} (${b.name}).`);pubUpdate({combat:{nsBoost:{name:b.name,boost:b.boost}}});}});runFx(null);return;}
+  if(S.ui.autoRes===c.id)return;S.ui.autoRes=c.id;
+  setTimeout(()=>{const c2=S.pub&&S.pub.combat;if(!c2||c2.id!==c.id||c2.stage!=='choose'||S.ui.fx||S.ui.curtain){S.ui.autoRes=null;return;}const r2=combatCalc(c2);if(r2.waiting){S.ui.autoRes=null;return;}resolveDamage();},2600);}
+function autoEndReady(){const p=S.pub;const t=p&&p.turn;if(!t||p.status!=='play'||p.combat||p.bonusAtk||t.actions>0||!mySeats().includes(t.seat))return false;
+  if(S.ui.fx||(S.ui.fxq||[]).length||S.ui.sheet||S.ui.curtain||S.ui.pendCard||S.ui.mode==='handlimit')return false;
+  if(S.ui.mode==='maneuver'){const mv=myLive(t.seat).filter(id=>!S.ui.moved[id]&&manTargets(id).size);if(mv.length)return false;}
+  else if(S.ui.mode)return false;
+  if(Object.values(p.reqs||{}).some(Boolean))return false;return true;}
+function autoEndCheck(){const t=S.pub&&S.pub.turn;if(!t||S.ui.autoEnd===t.n+':'+t.seat||!autoEndReady())return;const key=t.n+':'+t.seat;
+  clearTimeout(S.ui.autoEndT);S.ui.autoEndT=setTimeout(()=>{const t2=S.pub&&S.pub.turn;if(!t2||t2.n+':'+t2.seat!==key||S.ui.autoEnd===key||!autoEndReady())return;S.ui.autoEnd=key;toast('Out of actions — ending your turn.');if(S.ui.mode==='maneuver')resetUi();endTurn();},900);}
 function endTurn(){const s=S.pub.turn.seat;const pr=S.priv[s];
   if(hasIdent(s)&&S.ui.idAdv!==S.pub.turn.n&&S.pub.status==='play'){S.ui.idAdv=S.pub.turn.n;setIdent(s,identOf(s)+1,'End of turn');}
   {const d=heroOf(s);const h=heroId(s);if(d&&d.extraDraw&&S.ui.exDrew!==S.pub.turn.n&&liveF(h)&&S.pub.status==='play'){S.ui.exDrew=S.pub.turn.n;drawFx(s,d.extraDraw,`${d.hero.name}'s ability`);}}
@@ -1367,7 +1415,7 @@ function applyCombat(){const c=S.pub.combat;const dmg=combatDamage(c);const df=f
 let reconciling=false;
 function reconcile(){if(reconciling||!S.pub)return;reconciling=true;try{
   for(const s of mySeats()){const pr=S.priv[s];if(!pr)continue;
-    if((S.pub.status==='play')&&!pr.dealt&&pr.deck.length){const sc=(heroOf(s)||{}).startCard;if(sc){const i=pr.deck.findIndex(q=>q.name===sc);if(i>=0){pr.hand.push(pr.deck.splice(i,1)[0]);log(`${seatName(s)} starts with ${sc} in hand.`);}}shuffle(pr.deck);pr.dealt=true;drawCards(s,5);log(`${seatName(s)} shuffled and drew 5.`);}
+    if((S.pub.status==='play')&&!pr.dealt&&pr.deck.length){const sc=(heroOf(s)||{}).startCard;if(sc){const i=pr.deck.findIndex(q=>q.name===sc);if(i>=0){pr.hand.push(pr.deck.splice(i,1)[0]);log(`${seatName(s)} starts with ${sc} in hand.`);}}shuffle(pr.deck);pr.dealt=true;S.ui.noFlash=true;drawCards(s,5);S.ui.noFlash=false;log(`${seatName(s)} shuffled and drew 5.`);}
     const c=S.pub.combat;if(!c)continue;
     if(c.atkReady&&c.defReady){
       if(s===c.attacker&&!c.atkCard&&pr.pending){pubUpdate({combat:{atkCard:gateCard(s,pr.pending),atkBoost:pr.pendingBoost||null}});}
@@ -1380,7 +1428,7 @@ function reconcile(){if(reconciling||!S.pub)return;reconciling=true;try{
   }
   const c=S.pub.combat;if(c&&c.stage==='done'&&c.cleanA&&c.cleanD&&mySeats().includes(c.attacker)){pubUpdate({combat:null});checkDefeats();}
   if(!S.pub.combat&&S.pub.bonusAtk&&mySeats().includes(S.pub.bonusAtk.seat)&&!S.ui.fx)startBonus();
-  manxomeCheck();draculaChecks();driveCombat();processReqs();sizeSetupCheck();fogSetupCheck();turnStartCheck();
+  manxomeCheck();draculaChecks();driveCombat();processReqs();sizeSetupCheck();fogSetupCheck();turnStartCheck();autoEndCheck();
 }finally{reconciling=false;}}
 
 // ---------- Online plumbing ----------
@@ -1535,7 +1583,8 @@ function render(){const a=app();if(!a)return;
   if(!S.pub){a.innerHTML=S.ui.homeHeroes?`<div class="wrap"><button class="mini" data-a="homeback">← Home</button>${renderHeroes()}</div><div id="toast"></div>`:renderHome();return;}
   if(S.pub.status==='lobby'){a.innerHTML=renderLobby();return;}
   {const key=S.pub.gameId||'g';if(S.pub.status==='play'&&(S.pub.turn||{}).n<=1&&S.ui.qrKey!==key&&(!navigator.webdriver||window.__forceQR)){S.ui.qrKey=key;S.ui.view='quick';}}
-  a.innerHTML=renderGame();mount3d();applyLock();}
+  {const sh=S.pub.shown;const k=sh&&sh.card?(sh.seat+':'+(sh.card.id||sh.card.name)):null;if(k&&S.ui.shownKey!==k){const first=S.ui.shownKey===undefined;S.ui.shownKey=k;if(!first&&!(online()?S.mySeat===sh.seat:viewSeat()===sh.seat))setTimeout(()=>flashShow(`${seatName(sh.seat)} played`,[sh.card],{ms:3500}),0);}else if(!k)S.ui.shownKey=null;}
+  a.innerHTML=renderGame();mount3d();applyLock();setTimeout(()=>{try{autoEndCheck();autoResolveCheck();}catch(e){console.error(e);}},0);}
 
 function defTheme(def){ensureLib(def.hero.name);const L=LIB[heroSlug(def.hero.name)]||{};const color=L.color||def.color||'#64748b';
   return {color,back:L.back||def.back||genArt('back',def.hero.name,color),piece:L.piece||def.piece||genArt('tok',def.hero.name,color),side:L.side||def.side||(def.sidekick?genArt('tok',def.sidekick.name,shade(color,-25)):null)};}
@@ -1605,9 +1654,16 @@ function highlights(){if(S.ui.fx)return fxHighlights();const hi=new Set(),tg=new
   if(S.ui.mode==='free'&&(S.ui.sel||S.ui.placing||S.ui.selTok))board().spaces.forEach(s=>{if(!fighterAt(s.id)||S.ui.placing||S.ui.selTok)hi.add(s.id);});
   if(S.ui.mode==='attack'&&S.ui.atkF)validTargets(S.ui.atkF).forEach(x=>tg.add(x));
   return {hi,tg};}
+function handCw(){return matchMedia('(orientation:landscape) and (max-height:560px)').matches?Math.min(76,innerHeight*0.18):Math.min(112,innerWidth*0.24);}
+function fhPx(){const land=matchMedia('(orientation:landscape) and (max-height:560px)').matches;return handCw()*1.397+(land?24:26);}
+function camKey(){return 'um_cam_'+((S.pub&&S.pub.board&&S.pub.board.name)||'b');}
+function saveCam(){if(!G3.cam||!G3.ctl)return;const v={pos:G3.cam.position.toArray(),target:G3.ctl.target.toArray()};S.ui.cam=v;try{localStorage.setItem(camKey(),JSON.stringify(v));}catch(e){}}
+function loadCam(){if(S.ui.cam&&S.ui.camKey===camKey())return S.ui.cam;try{const v=JSON.parse(localStorage.getItem(camKey())||'null');S.ui.cam=v;S.ui.camKey=camKey();return v;}catch(e){return null;}}
+function applyCam(){const v=loadCam();if(!v||!G3.cam){resetCam3d();return;}G3.cam.position.fromArray(v.pos);G3.ctl.target.fromArray(v.target);G3.ctl.update();}
+function rot2d(){return +(S.ui.rot2d??(()=>{try{return +localStorage.getItem('um_rot2d')||0;}catch(e){return 0;}})());}
 function lockBtn(){return `<button class="mini" data-a="x_lock">${S.ui.lock?'🔒 Board locked':'🔓 Lock board'}</button>`;}
 function boardView(){if(S.ui.view3d!==false&&window.THREE)return `<div class="b3wrap"><div id="b3"></div><div class="b3ctl">${lockBtn()}${S.ui.lock?'':'<button class="mini" data-a="cam">Reset view</button>'}<button class="mini" data-a="v2d">2D</button></div></div>`;
-  return `<div class="b3wrap flat">${boardSvg()}<div class="b3ctl">${lockBtn()}${window.THREE?'<button class="mini" data-a="v3d">3D</button>':''}</div></div>`;}
+  return `<div class="b3wrap flat"><div class="rotwrap" style="transform:rotate(${rot2d()}deg)">${boardSvg()}</div><div class="b3ctl">${lockBtn()}${S.ui.lock?'':'<button class="mini" data-a="x_rot2d" data-k="-15">⟲</button><button class="mini" data-a="x_rot2d" data-k="15">⟳</button><button class="mini" data-a="x_rot2d" data-k="90">90°</button>'}${window.THREE?'<button class="mini" data-a="v3d">3D</button>':''}</div></div>`;}
 function applyLock(){if(G3.ctl){G3.ctl.enabled=!S.ui.lock;}if(G3.r)G3.r.domElement.style.touchAction='none';const b=document.querySelector('svg.board');if(b)b.style.touchAction=S.ui.lock?'none':'manipulation';}
 function goLandscape(){try{const el=document.documentElement;const p=el.requestFullscreen?el.requestFullscreen({navigationUI:'hide'}):Promise.reject();
   Promise.resolve(p).then(()=>screen.orientation&&screen.orientation.lock?screen.orientation.lock('landscape'):null).catch(()=>{if(window.innerHeight>window.innerWidth)toast('Rotate your phone sideways for the landscape table.');});}catch(e){}}
@@ -1661,6 +1717,11 @@ function dialHtml(id,f){const th=themeOf(f.seat);const r=34,C=2*Math.PI*r,frac=f
    <div class="dialname" data-a="selF" data-f="${id}"><span class="dot" style="background:${COLORS[f.seat]}"></span>${esc(f.name)}</div>
    ${showManual()?`<div class="dialbtns"><button data-a="hp" data-f="${id}" data-d="-1">−</button><button data-a="hp" data-f="${id}" data-d="1">+</button></div>`:''}</div>`;}
 function backHtml(seat,label){const th=themeOf(seat);return `<div class="cd back" style="--c:${th.color};${th.back?`background-image:url(${th.back})`:''}"><span>${esc(label||'Face down')}</span></div>`;}
+function flashShow(title,cards,opts){opts=opts||{};const now=Date.now();const f=S.ui.flash;
+  if(f&&f.title===title&&now-f.t<1500&&!opts.back)f.cards=f.cards.concat(cards);else S.ui.flash={title,cards:cards.slice(),back:opts.back||null,n:opts.n||0,t:now,drew:!!opts.drew};
+  clearTimeout(S.ui.flashT);S.ui.flashT=setTimeout(()=>{S.ui.flash=null;if(S.pub)render();},opts.ms||2800);if(S.pub)render();}
+function renderFlash(){const f=S.ui.flash;if(!f)return '';const n=f.back?f.n:f.cards.length;if(!n)return ''; const W=Math.min(innerWidth*0.94,900)-24,H=innerHeight*(f.drew?(innerHeight<560?0.3:0.2):(innerHeight<560?0.62:0.42));const w=Math.floor(Math.max(48,Math.min(f.drew?110:170,(W-8*(n-1))/n,H/1.397)));
+  return `<div class="flash${f.drew?' drew':''}" style="--flw:${w}px"><h4>${esc(f.title)}</h4><div class="frow">${f.back?Array.from({length:n},()=>`<i class="fback" style="background-image:url(${esc(f.back)})"></i>`).join(''):f.cards.map(c=>cardHtml(c)).join('')}</div></div>`;}
 function cardHtml(c,act,extra=''){if(!c)return '';const tcol={attack:'#ef4444',defense:'#3b82f6',versatile:'#a855f7',scheme:'#eab308'}[c.type]||'#888';
   if(c.art)return `<div class="cd art" ${act?`data-a="${act}" data-c="${c.id}"`:''} style="--t:${tcol}" title="${esc(c.name)}" ${extra}><img src="${esc(c.art)}" alt="${esc(c.name)} — ${esc(c.type)} ${c.type==='scheme'?'':esc(c.value)}, boost ${esc(c.boost)}. ${esc(c.text)}" loading="lazy" draggable="false"></div>`;
   return `<div class="cd" ${act?`data-a="${act}" data-c="${c.id}"`:''} style="--t:${tcol}" ${extra}>
@@ -1708,7 +1769,7 @@ function renderTV(){const p=S.pub;const t=p.turn;const v3=S.ui.view3d!==false&&w
    <div class="mmats"><div class="mcol">${v3?'':miniMat('p2')}${p.shown?`<button class="bchip">▶ ${esc(seatName(p.shown.seat))} played <b>${esc(p.shown.card.name)}</b></button>`:''}</div><div class="mcol r">${v3?'':miniMat('p1')}</div></div>
    <div class="bwrap${v3?' full':''}">${boardView()}</div>
    ${p.combat?`<div class="combatfloat tvc">${renderCombat()}</div>`:''}
-   <div class="tvfoot"><div class="fchips">${fchips}</div><div class="tvlog">${last}</div></div></div><div id="toast"></div>`;}
+   <div class="tvfoot"><div class="fchips">${fchips}</div><div class="tvlog">${last}</div></div></div>${renderFlash()}<div id="toast"></div>`;}
 function renderGame(){if(isTV())return renderTV();const p=S.pub;const me=viewSeat();const fs=fighters();const t=p.turn;const myTurn=t.seat===me&&p.status==='play';
   const pr=S.priv[me];const opp=OPP[me];
   if(!online()&&S.ui.curtain){return `<div class="curtain"><h2>Pass the phone to ${esc(seatName(S.ui.viewer))}</h2><p class="muted">Their hand is hidden until they tap.</p><button class="btn pri" data-a="uncurtain">I'm ${esc(seatName(S.ui.viewer))} — show my hand</button></div><div id="toast"></div>`;}
@@ -1738,7 +1799,7 @@ function renderGame(){if(isTV())return renderTV();const p=S.pub;const me=viewSea
   const handCards=hcs.map((c,i)=>{const k=i-(nH-1)/2;const st=`--r:${(k*spread).toFixed(2)}deg;--y:${(k*k*1.6).toFixed(1)}px;--ov:${(step-cw).toFixed(1)}px;z-index:${i+1}`;
     let h=cardHtml(c,'card');h=h.replace(/style="/,`style="${st};`);return cardPlayable(c)?h:h.replace('class="cd','class="cd off');}).join('');
   const portrait=window.innerHeight>window.innerWidth;const ctrl=online()&&p.tv&&!S.ui.showBoard&&!needsBoard();const v3=!ctrl&&S.ui.view3d!==false&&window.THREE;
-  const comb=p.combat?(S.ui.combatMin||(S.ui.fx&&S.ui.fx.kind!=='cards'&&S.ui.fx.kind!=='opts')?`<button class="bchip cmb" data-a="x_cmb">⚔ Combat — tap to show</button>`:`<div class="combatfloat">${renderCombat().replace('<h3>⚔ Combat</h3>','<h3>⚔ Combat <button class="mini" data-a="x_cmb" style="float:right">Hide</button></h3>')}</div>`):'';
+  const comb=p.combat?(S.ui.combatMin||(S.ui.fx&&S.ui.fx.kind!=='cards'&&S.ui.fx.kind!=='opts')?`<button class="bchip cmb" data-a="x_cmb">⚔ Combat — tap to show</button>`:`<div class="combatfloat${p.combat&&p.combat.defReady?' rev':''}">${renderCombat().replace('<h3>⚔ Combat</h3>','<h3>⚔ Combat <button class="mini" data-a="x_cmb" style="float:right">Hide</button></h3>')}</div>`):'';
   const tabsMini=`<nav class="tabs mini-tabs"><button class="${S.ui.drawer?'on':''}" data-a="x_drawer">☰ More</button>${['game','heroes','log','rules'].map(x=>`<button class="${S.ui.tab===x?'on':''}" data-a="tab" data-k="${x}">${x[0].toUpperCase()+x.slice(1)}</button>`).join('')}</nav>`;
   const drawer=S.ui.drawer?`<div class="drawerbg" data-a="x_drawer"></div><aside class="drawer"><div class="row" style="justify-content:space-between"><b>Table</b><button class="mini" data-a="x_drawer">Close</button></div>
    <div class="fchips">${fchips}</div>
@@ -1767,7 +1828,7 @@ function renderGame(){if(isTV())return renderTV();const p=S.pub;const me=viewSea
    ${drawer}
    <div class="fanlbl">Your hand · ${pr?pr.hand.length:0} · drag a card up to play it</div>
    <div class="hand fan">${handCards||'<span class="empty-hand">No cards in hand.</span>'}</div>
-  </div>${renderSheet()}${renderPeek()}${renderFxCards()}${renderViewer()}<div id="toast"></div>`;}
+  </div>${renderSheet()}${renderPeek()}${renderFxCards()}${renderViewer()}${renderFlash()}<div id="toast"></div>`;}
 
 function genHeroCard(d,big){return `<div class="gencard${big?' big':''}"><div class="gch">${esc(d.hero.name)}</div><div class="gcs">${d.hero.hp} HP · Move ${d.hero.move} · ${d.hero.ranged?'Ranged':'Melee'}</div><div class="gca">${esc(d.hero.ability)}</div>${d.sidekick?`<div class="gch sm">${esc(d.sidekick.name)}${d.sidekick.count>1?' ×'+d.sidekick.count:''}</div>`:''}</div>`;}
 function miniCard(c){if(!c)return '<div class="pilecard empty">empty</div>';const tcol={attack:'#ef4444',defense:'#3b82f6',versatile:'#a855f7',scheme:'#eab308'}[c.type]||'#888';
@@ -1844,7 +1905,7 @@ function renderSheet(){const sh=S.ui.sheet;if(!sh)return '';const me=viewSeat();
   if(S.ui.mode==='scheme'&&schemeOK(c,me))btns.push(['playscheme','Play this scheme']);
   const why=!btns.length&&!cardPlayable(c)?`<p class="muted small" style="text-align:center">${esc(c.fighter&&norm(c.fighter)!=='any'?'Only '+c.fighter+' can use this card.':'')}</p>`:'';
   if(showManual())btns.push(['reveal','Show to opponent'],['discard2','Discard (card effect)'],['topdeck','Put on top of deck']);btns.push(['close','Close']);
-  return `<div class="sheet" data-a="close"><div class="sheetin">${cardHtml(c)}${why}
+  return `<div class="sheet" data-a="close"><div class="sheetin cardsheet" style="--nb:${btns.length}">${cardHtml(c)}${why}
    <div class="sbtns">${btns.map(([a,l])=>`<button class="btn${a==='close'?' ghost':''}" data-a="s_${a}">${esc(l)}</button>`).join('')}</div></div></div>`;}
 function renderPeek(){const k=S.ui.peek;if(!k)return '';const pile=S.pub.discard[k]||[];
   return `<div class="sheet" data-a="closepeek"><div class="sheetin"><h3>${esc(seatName(k))} discard pile (${pile.length})</h3>
@@ -1896,7 +1957,7 @@ document.addEventListener('click',async e=>{const el=e.target.closest('[data-a],
     case 'homeback':S.ui.homeHeroes=false;render();return;
     case 'v2d':S.ui.view3d=false;render();return;
     case 'v3d':S.ui.view3d=true;render();return;
-    case 'cam':resetCam3d();return;
+    case 'cam':resetCam3d();try{localStorage.removeItem(camKey());}catch(e){}S.ui.cam=null;return;
     case 'uncurtain':S.ui.curtain=false;render();setTimeout(reconcile,0);return;
     case 'swap':S.ui.curtain=true;render();return;
     case 'act':pubUpdate({turn:{actions:Math.max(0,S.pub.turn.actions+(+el.dataset.d))}});return;
@@ -1952,7 +2013,8 @@ document.addEventListener('click',e=>{const el=e.target.closest('[data-a^="x_"]'
     case 'x_ok':{if(!fx||(fx.kind!=='cards'&&fx.kind!=='opts'))return;const sel=fx.sel||[];if(sel.length<fx.min||sel.length>fx.max)return;S.ui.fxSkip=null;const t=fx.then;S.ui.fx=null;t(sel);nextFx();return;}
     case 'x_resolve':resolveDamage();return;
     case 'x_size':toggleSize(el.dataset.k,'Manual');return;
-    case 'x_lock':S.ui.lock=!S.ui.lock;try{localStorage.setItem('um_lock',S.ui.lock?'1':'0');}catch(e){}render();toast(S.ui.lock?'Board locked: it won\'t pan, rotate or zoom. Taps still work.':'Board unlocked: drag to rotate, pinch to zoom.');return;
+    case 'x_lock':S.ui.lock=!S.ui.lock;if(S.ui.lock&&G3.cam&&document.getElementById('b3'))saveCam();try{localStorage.setItem('um_lock',S.ui.lock?'1':'0');}catch(e){}render();toast(S.ui.lock?'Board locked at this angle. Taps still work.':'Board unlocked: drag to rotate, two fingers to move, pinch to zoom. Lock it when it looks right.');return;
+    case 'x_rot2d':{const v=((rot2d()+ +el.dataset.k)%360+360)%360;S.ui.rot2d=v;try{localStorage.setItem('um_rot2d',String(v));}catch(e){}render();return;}
     case 'x_land':goLandscape();return;
     case 'x_drawer':S.ui.drawer=!S.ui.drawer;render();return;
     case 'x_cmb':S.ui.combatMin=!S.ui.combatMin;render();return;
@@ -2031,18 +2093,18 @@ function init3d(){const r=new THREE.WebGLRenderer({antialias:true,alpha:true});r
   scene.add(new THREE.HemisphereLight(0xdfe8ff,0x1a1408,0.75));
   const dl=new THREE.DirectionalLight(0xffffff,0.9);dl.position.set(4,10,6);dl.castShadow=true;dl.shadow.mapSize.set(1024,1024);
   const sc=dl.shadow.camera;sc.left=-10;sc.right=10;sc.top=10;sc.bottom=-10;scene.add(dl);
-  G3.ctl=new THREE.OrbitControls(G3.cam,r.domElement);G3.ctl.enableDamping=true;G3.ctl.maxPolarAngle=1.35;G3.ctl.minDistance=3;G3.ctl.maxDistance=24;
+  G3.ctl=new THREE.OrbitControls(G3.cam,r.domElement);G3.ctl.enableDamping=true;G3.ctl.maxPolarAngle=1.52;G3.ctl.screenSpacePanning=true;G3.ctl.minDistance=3;G3.ctl.maxDistance=24;
   r.domElement.style.touchAction='none';
   r.domElement.addEventListener('pointerdown',e=>{G3.down={x:e.clientX,y:e.clientY,t:Date.now()};});
   r.domElement.addEventListener('pointerup',e=>{const d=G3.down;if(d){G3.up={x:e.clientX,y:e.clientY};}});
   r.domElement.addEventListener('click',e=>{const d=G3.down;G3.down=null;if(d&&Math.hypot(e.clientX-d.x,e.clientY-d.y)>12)return;pick3d(e);});
   const loop=()=>{requestAnimationFrame(loop);if(!r.domElement.isConnected)return;G3.ctl.update();animate3d();r.render(scene,G3.cam);};loop();
   window.addEventListener('resize',()=>resize3d());}
-function resize3d(){const host=document.getElementById('b3');if(!host||!G3.r)return;const fh=parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--fh'))||100;
+function resize3d(){const host=document.getElementById('b3');if(!host||!G3.r)return;const fh=fhPx();
   const w=host.clientWidth||window.innerWidth,h=host.clientHeight||window.innerHeight;G3.r.setSize(w,h);
   const top=28,L=fh-top,A=Math.abs(L);const SW=parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--sidew'))||0;
   G3.cam.aspect=(w+SW)/(h+A);G3.visFrac=Math.max(.3,(h-fh-top)/(h+A));G3.visFracW=Math.max(.4,(w-SW)/(w+SW));
-  if(G3.cam.setViewOffset){G3.cam.setViewOffset(w+SW,h+A,SW,L>=0?L:0,w,h);}G3.cam.updateProjectionMatrix();if(S.ui.lock||!G3.fitted){resetCam3d();G3.fitted=true;}}
+  if(G3.cam.setViewOffset){G3.cam.setViewOffset(w+SW,h+A,SW,L>=0?L:0,w,h);}G3.cam.updateProjectionMatrix();if(S.ui.lock||!G3.fitted){applyCam();G3.fitted=true;}}
 function camFit(){const cam=G3.cam;if(!cam||!G3.tableW)return null;const th=50*Math.PI/180;const fov=cam.fov*Math.PI/180;const asp=cam.aspect||1.6;
   const visFrac=G3.visFrac||1;const tv=Math.tan(fov/2)*visFrac,th2=Math.tan(fov/2)*asp*(G3.visFracW||1);
   const dW=(G3.tableW/2)/th2*1.02,dH=(G3.boardD*Math.sin(th)/2+0.45)/tv*1.02;const d=Math.max(dW,dH,4);
@@ -2143,7 +2205,7 @@ function sync3d(){if(!S.pub||!S.pub.board)return;const b=board();if(G3.key!==b.n
     let g=G3.fig[id];if(g&&g.userData.key!==key){G3.root.remove(g);g=null;}
     if(!g){g=buildFigure(id,f);G3.root.add(g);G3.fig[id]=g;const sp=f.space&&spPos(id);if(sp){const p=w3(sp);g.position.set(p.x,0,p.z);}}
     const sp=f.space&&spPos(id);g.visible=!!sp&&f.hp>0;
-    if(sp){const p=w3(sp);if(!g.userData.to||g.userData.to.x!==p.x||g.userData.to.z!==p.z){g.userData.from={x:g.position.x,z:g.position.z};g.userData.to=p;g.userData.t0=performance.now();}}
+    if(sp){const p=w3(sp);const u=g.userData;if(!u.to){u.to=p;if(!u.from)g.position.set(p.x,0,p.z);}else if(Math.hypot(u.to.x-p.x,u.to.z-p.z)>1e-6){const far=Math.hypot(g.position.x-p.x,g.position.z-p.z)>0.12;if(far){u.from={x:g.position.x,z:g.position.z};u.t0=performance.now();}else{u.from=null;g.position.set(p.x,0,p.z);}u.to=p;}}
     g.userData.sel.visible=(S.ui.sel===id||S.ui.atkF===id);g.userData.tgt.visible=tg.has(id);
     const hk=f.hp+'/'+f.max;if(g.userData.hpKey!==hk){if(g.userData.hpS)g.remove(g.userData.hpS);const hs=hpSprite(f);
       if(g.userData.topY===undefined){g.userData.topY=new THREE.Box3().setFromObject(g).max.y-g.position.y;}hs.position.set(0,(g.userData.topY||.7)+.2,0);hs.userData.f=id;g.add(hs);g.userData.hpS=hs;g.userData.hpKey=hk;}}
@@ -2402,13 +2464,14 @@ function fxHint(){const fx=S.ui.fx;if(!fx||fx.kind==='cards'||fx.kind==='opts')r
   if(fx.kind==='tok')h+=fx.sel?' — tap a lit space for the fog token.':' — tap a fog token (lit space).';
   const btn=fx.noSkip?'':(fx.kind==='manual'||fx.kind==='multi'||(fx.kind==='tok'&&fx.multi)?'Done':(fx.skip===false?'End':'Skip'));
   return h+(btn?` <button class="mini" data-a="x_skip">${btn}</button>`:'');}
+function pickW(n){const W=Math.min(innerWidth*0.96,900)-30,H=innerHeight-(innerHeight<560?150:210);let best=60;for(let cols=1;cols<=Math.max(1,n);cols++){const rows=Math.ceil(n/cols);const w=Math.min((W-8*(cols-1))/cols,(H-8*(rows-1))/rows/1.397,210);if(w>best)best=w;}return Math.floor(best);}
 function renderFxCards(){const fx=S.ui.fx;if(fx&&fx.kind==='opts'){const sel=fx.sel||[];const ok=sel.length>=fx.min&&sel.length<=fx.max;
-    return `<div class="sheet"><div class="sheetin"><h3>${esc(fx.title)}</h3><p class="muted small">${esc(fx.label)}</p><div class="optgrid">${fx.opts.map(o=>`<button class="opt${sel.includes(o.id)?' on':''}" data-a="x_opt" data-c="${esc(o.id)}">${o.img?`<img src="${esc(o.img)}" alt="">`:''}<span>${esc(o.label)}</span></button>`).join('')}</div>
+    return `<div class="sheet"><div class="sheetin" style="${innerHeight<560?'max-width:min(96vw,900px)':''}"><h3>${esc(fx.title)}</h3><p class="muted small">${esc(fx.label)}</p><div class="optgrid">${fx.opts.map(o=>`<button class="opt${sel.includes(o.id)?' on':''}" data-a="x_opt" data-c="${esc(o.id)}">${o.img?`<img src="${esc(o.img)}" alt="">`:''}<span>${esc(o.label)}</span></button>`).join('')}</div>
      <div class="sbtns"><button class="btn pri" data-a="x_ok" ${ok?'':'disabled'}>Confirm${fx.max>1?` (${sel.length}/${fx.max})`:''}</button></div></div></div>`;}
   if(!fx||fx.kind!=='cards')return '';const sel=fx.sel||[];
   const ok=sel.length>=fx.min&&sel.length<=fx.max;
-  return `<div class="sheet"><div class="sheetin"><h3>${esc(fx.title)}</h3><p class="muted small">${esc(fx.label)}</p>
-   <div class="hand wrapgrid pickgrid">${fx.cards.map(c=>cardHtml(c,'x_pick',sel.includes(c.id)?'data-picked="1"':'')).join('')}</div>
+  return `<div class="sheet"><div class="sheetin" style="max-width:min(96vw,900px)"><h3>${esc(fx.title)}</h3><p class="muted small">${esc(fx.label)}</p>
+   <div class="hand wrapgrid pickgrid" style="--pw:${pickW(fx.cards.length)}px">${fx.cards.map(c=>cardHtml(c,'x_pick',sel.includes(c.id)?'data-picked="1"':'')).join('')}</div>
    <div class="sbtns"><button class="btn pri" data-a="x_ok" ${ok?'':'disabled'}>${esc(fx.okLabel||'Confirm')}${fx.max>1?` (${sel.length}/${fx.max})`:''}</button>
    ${fx.min===0?`<button class="btn ghost" data-a="x_skip">${esc(fx.skipLabel||'Skip')}</button>`:''}</div></div></div>`;}
 
@@ -3813,7 +3876,7 @@ function pick3dAt(x,y){if(!G3.r||!document.getElementById('b3'))return null;cons
   for(const h of hits){let q=h.object;let vis=true;for(let z=q;z;z=z.parent)if(!z.visible){vis=false;break;}if(!vis)continue;while(q&&!(q.userData&&(q.userData.f||q.userData.sp||q.userData.mat)))q=q.parent;if(q)return q.userData;}return null;}
 function fighterAtPoint(x,y){const el=document.elementFromPoint(x,y);const f=el&&el.closest&&el.closest('[data-f]');if(f)return f.dataset.f;
   const u=pick3dAt(x,y);if(u){if(u.f)return u.f;if(u.sp)return fighterAt(u.sp);}return null;}
-function overHand(y){const fh=parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--fh'))||100;return y>window.innerHeight-fh+4;}
+function overHand(y){const fh=fhPx();return y>window.innerHeight-fh+4;}
 // Decide what dropping card c at (x,y) means. With run=true, do it.
 function dragIntent(c,x,y,run){const me=viewSeat();const p=S.pub;const comb=p.combat;const t=p.turn;const no=m=>({ok:false,label:m});
   if(!c)return no('');if(S.ui.fx)return no('Finish the current effect first');
