@@ -1611,7 +1611,7 @@ function renderHeroes(){const k=S.ui.browse;
    <p class="muted small">Deck: ${types.map(t=>`${cnt(t)} ${t}`).join(' · ')} · total boost ${boost}</p>
    ${types.filter(t=>by(t).length).map(t=>`<h3 class="dtype">${t[0].toUpperCase()+t.slice(1)} (${cnt(t)})</h3><div class="deckgrid">${by(t).map(c=>`<div class="qwrap">${cardHtml(Object.assign({id:'v'},c))}<span class="qty">×${c.qty}</span></div>`).join('')}</div>`).join('')}`;}
 function renderHome(){const last=(()=>{try{return localStorage.getItem('um_last')}catch(e){return null}})();
-  return `<div class="wrap"><h1>Unmatched <span>Online</span></h1>
+  return `<div class="wrap"><h1 class="logoh"><img src="icons/logo.png" alt="Unmatched" onerror="this.outerHTML='Unmatched '" style="height:56px;width:auto;border-radius:8px;vertical-align:middle;margin-right:10px"><span>Online</span></h1>
   <p class="sub">A shared tabletop for two phones. The page tracks the board, private hands, simultaneous card reveals and health; you apply card effects yourselves.</p>
   ${S.ui.loading?'<p class="muted">Connecting…</p>':''}
   ${S.ui.err?`<p class="err">${esc(S.ui.err)}</p>`:''}${S.ui.artLoading?'<p class="muted">Downloading card art for offline use (first visit only, about 11 MB)…</p>':''}${S.db&&S.db.kind==='firebase'?'<p class="muted small">Online rooms use Firebase — any device can leave and rejoin with the room code.</p>':''}${S.db&&S.db.kind==='peer'?'<p class="muted small">Online rooms are peer-to-peer: keep the device that created the room open (ideally the TV, or the first phone) — it hosts the game.</p>':''}
@@ -1787,10 +1787,10 @@ function renderGame(){if(isTV())return renderTV();const p=S.pub;const me=viewSea
   const fchips=Object.entries(fs).map(([id,f])=>dialHtml(id,f)).join('');
   const mode=S.ui.mode;let hint=fxHint();
   if(hint){}else
-  if(mode==='maneuver')hint=`Maneuver: tap your fighter, then a lit space.${heroOf(me)&&heroOf(me).escape&&S.ui.boostUsed?' Escape Artist: Houdini may be placed in any empty space.':''} Boost: +${S.ui.boost} (drag a card up or tap → Boost).${heroOf(me)&&heroOf(me).suit&&suitOf(me).length&&!S.ui.boostUsed&&!Object.keys(S.ui.moved).length?` <button class="mini" data-a="suitboost">Boost from Suit (${suitOf(me).length})</button>`:''}${heroOf(me)&&heroOf(me).maneuverBonus&&kwCount(me,heroOf(me).maneuverBonus)?` ${esc(heroOf(me).hero.name)}'s ability: +${kwCount(me,heroOf(me).maneuverBonus)} move.`:''} <button class="mini" data-a="donemove">Done</button>`;
+  if(mode==='maneuver')hint=`Maneuver: tap your fighter, then a lit space.${heroOf(me)&&heroOf(me).escape&&S.ui.boostUsed?' Escape Artist: Houdini may be placed in any empty space.':''} Boost: +${S.ui.boost} (drag a card up or tap → Boost).${heroOf(me)&&heroOf(me).suit&&suitOf(me).length&&!S.ui.boostUsed&&!Object.keys(S.ui.moved).length?` <button class="mini" data-a="suitboost">Boost from Suit (${suitOf(me).length})</button>`:''}${heroOf(me)&&heroOf(me).maneuverBonus&&kwCount(me,heroOf(me).maneuverBonus)?` ${esc(heroOf(me).hero.name)}'s ability: +${kwCount(me,heroOf(me).maneuverBonus)} move.`:''} <button class="mini" data-a="donemove">Done</button>${S.ui.manUndo&&S.ui.manUndo.card&&!Object.keys(S.ui.moved||{}).length&&!S.ui.boostUsed?' <button class="mini" data-a="undoman">Cancel</button>':''}`;
   else if(mode==='attack'&&S.ui.pendCard){const pc=handOf(me).find(c=>c.id===S.ui.pendCard);hint=`Attacking with <b>${esc(pc?pc.name:'card')}</b>: ${S.ui.atkT?`tap which of your fighters attacks ${esc(fighters()[S.ui.atkT].name)}`:(S.ui.atkF?'tap the target (red ring)':'tap your attacking fighter, then the target')}. <button class="mini" data-a="cancel">Cancel</button>`;}
   else if(mode==='attack')hint=S.ui.atkF?(S.ui.atkT?'Now tap an attack or versatile card in your hand.':'Tap a target (outlined red).')+' <button class="mini" data-a="cancel">Cancel</button>':'Tap the fighter that attacks. <button class="mini" data-a="cancel">Cancel</button>';
-  else if(mode==='scheme')hint='Tap a scheme card in your hand. <button class="mini" data-a="cancel">Cancel</button>';
+  else if(mode==='scheme')hint='Tap a scheme card in your hand to play it. <button class="mini" data-a="cancel">Cancel</button>';
   else if(mode==='free')hint=(S.ui.placing?`Tap a space to place “${esc(S.ui.placing)}”.`:'Free move: tap any fighter or token, then any space. Tap a token twice to remove it.')+' <button class="mini" data-a="cancel">Done</button>';
   else if(mode==='handlimit')hint=`Discard ${S.ui.discardNeed} more card(s): tap cards in your hand.`;
   const canAct=t.actions>0;const dis=x=>x?'':' disabled';
@@ -1969,7 +1969,7 @@ document.addEventListener('click',async e=>{const el=e.target.closest('[data-a],
     case 'act':pubUpdate({turn:{actions:Math.max(0,S.pub.turn.actions+(+el.dataset.d))}});return;
     case 'hp':{const f=fighters()[el.dataset.f];setHp(el.dataset.f,f.hp+(+el.dataset.d));return;}
     case 'selF':{const f=fighters()[el.dataset.f];if(f&&f.space)onFighter(el.dataset.f);return;}
-    case 'maneuver':if(S.pub.turn.actions<=0)return;pubUpdate({turn:{maneuvered:true}});useAction();drawCards(me,1);Object.assign(S.ui,{mode:'maneuver',sel:null,boost:0,boostUsed:false,moved:{},hellCyc:false});log(`${seatName(me)} maneuvers (draws 1).`);
+    case 'maneuver':{if(S.pub.turn.actions<=0)return;const und={man:!!S.pub.turn.maneuvered,hl:S.priv[me].hand.length,dl:S.priv[me].deck.length,hf:(heroOf(me)||{}).hellfire?hfOf(me):null,log:(S.pub.log||[]).length};pubUpdate({turn:{maneuvered:true}});useAction();drawCards(me,1);const pr0=S.priv[me];und.card=pr0.hand.length===und.hl+1?pr0.hand[pr0.hand.length-1].id:null;und.ok=!!und.card||und.dl===0&&false;Object.assign(S.ui,{mode:'maneuver',sel:null,boost:0,boostUsed:false,moved:{},hellCyc:false,manUndo:und});}log(`${seatName(me)} maneuvers (draws 1).`);
       {const d=heroOf(me);const h=heroId(me);if(d&&d.hellfire&&hfOf(me)>0&&liveF(h)){pushFx({kind:'opts',title:'Hell Cycle',label:`Spend 1 Hellfire (you have ${hfOf(me)})? Ghost Rider's move becomes 4, he can ride through enemies and deals 1 damage to each one he passes. (No boost with the Hell Cycle.)`,opts:[{id:'y',label:'Spend 1 — Hell Cycle'},{id:'n',label:'Normal maneuver'}],min:1,max:1,noSkip:true,
         then:(ids)=>{if(ids[0]!=='y')return;S.ui.hellCyc=true;setHf(me,hfOf(me)-1,'Hell Cycle');}});runFx(null);return;}}
       render();return;
@@ -1980,6 +1980,10 @@ document.addEventListener('click',async e=>{const el=e.target.closest('[data-a],
     case 'scheme':if(S.pub.turn.actions<=0)return;if(!S.priv[me].hand.some(c=>schemeOK(c,me))){toast('No scheme you can play right now.');return;}S.ui.mode='scheme';render();return;
     case 'attack':if(S.pub.turn.actions<=0)return;if(!attackersFor(me).length){toast('No legal attack: no fighter has both a target in range and a card it can use.');return;}Object.assign(S.ui,{mode:'attack',atkF:null,atkT:null});render();return;
     case 'cancel':resetUi();render();return;
+    case 'undoman':{const u=S.ui.manUndo;if(!u||!u.card||Object.keys(S.ui.moved||{}).length||S.ui.boostUsed){toast("You've already moved or boosted — finish the maneuver.");return;}
+      const pr=S.priv[me];const i=pr.hand.findIndex(q=>q.id===u.card);if(i<0){toast('Can\'t take it back now.');return;}const q=pr.hand.splice(i,1)[0];pr.deck.unshift(q);privSave(me);
+      const t=S.pub.turn;pubUpdate({turn:{actions:t.actions+1,used:Math.max(0,(t.used||0)-1),maneuvered:u.man}});if(u.hf!=null&&hfOf(me)!==u.hf)pubUpdate({trackers:{[me]:{counters:{hell:u.hf}}}});
+      S.ui.flash=null;resetUi();S.ui.manUndo=null;log(`${seatName(me)} cancels the maneuver (the drawn card goes back on top of the deck).`);render();return;}
     case 'end':if(S.pub.turn.actions>0&&!showManual()){toast('Take your remaining actions first (you can always Maneuver).');return;}endTurn();return;
     case 'free':Object.assign(S.ui,{mode:'free',sel:null,placing:null});render();return;
     case 'token':openTokenDialog();return;
