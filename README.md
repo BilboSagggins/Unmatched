@@ -19,58 +19,54 @@ A browser version of Unmatched with automated rules, pass-and-play, TV mode and 
 
 Without Firebase the game already works online, peer-to-peer: the device that creates the room hosts it and must stay open. Firebase removes that limit.
 
-## 2. Turn on Firebase (recommended for online play)
-With Firebase the game state lives in the cloud, so any phone or the TV can sleep, reload or leave and rejoin with the room code, and mobile data works as well as Wi-Fi. Each player's hand still stays only on their own device.
+## 2. Turn on Firebase (Cloud Firestore)
+With Firebase the game state lives in the cloud, so any phone or the TV can sleep, reload or leave and rejoin with the room code, and mobile data works as well as Wi-Fi. Each player's hand still stays only on its own device. Rooms are stored in a Firestore collection called `unmatched_games`.
 
-### a. Create the project
-1. Go to <https://console.firebase.google.com> and sign in with a Google account.
-2. **Create a project** (any name, e.g. `unmatched`). You can turn Google Analytics off.
+### a. Project and Firestore
+You can reuse a Firebase project you already have (each app keeps its own collection) or create a new one at <https://console.firebase.google.com>.
+If the project doesn't have Firestore yet: **Build → Firestore Database → Create database**, pick a location, start in **production mode**.
 
-### b. Create the Realtime Database
-1. In the left menu: **Build → Realtime Database → Create Database**.
-2. Pick the location closest to you, then **Start in locked mode** → **Enable**.
-3. Open the **Rules** tab, replace everything with this, then **Publish**:
-   ```json
-   {
-     "rules": {
-       "unmatched": {
-         "games": {
-           "$code": {
-             ".read": true,
-             ".write": true,
-             ".validate": "newData.isString() && newData.val().length < 400000"
-           }
-         },
-         "$other": { ".read": false, ".write": false }
-       },
-       "$other": { ".read": false, ".write": false }
-     }
-   }
-   ```
-4. On the **Data** tab, copy the database URL at the top (looks like `https://unmatched-xxxx-default-rtdb.firebaseio.com`).
+### b. Rules
+**Firestore Database → Rules.** Add this `match` block *inside* the existing `match /databases/{database}/documents { … }` section (keep any rules your other apps use), then **Publish**:
+```
+    match /unmatched_games/{code} {
+      allow read, write: if true;
+    }
+```
+For a brand-new project, the whole rules file is:
+```
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /unmatched_games/{code} {
+      allow read, write: if true;
+    }
+  }
+}
+```
 
-### c. Register the web app
-1. Click the ⚙️ gear → **Project settings**. Under **Your apps**, click the **`</>`** (Web) icon.
-2. Give it a nickname, leave Hosting unticked, **Register app**.
-3. You'll see a `firebaseConfig = { … }` block. Keep this page open.
+### c. Web app config
+⚙️ **Project settings → Your apps**. If there's no web app yet, click **`</>`** and register one. Under **SDK setup and configuration → Config** you'll see `const firebaseConfig = { … }`.
+If you reuse a web app from another of your games, you can copy the same values.
 
 ### d. Fill in `firebase-config.js`
-Open `firebase-config.js` (on GitHub: click the file → ✏️ pencil) and replace the `PASTE_…` values with yours:
+On GitHub open `firebase-config.js` → ✏️ pencil, replace the `PASTE_…` values with yours, **Commit changes**:
 ```js
 window.UNMATCHED_FIREBASE = {
   apiKey: "AIza…",
-  authDomain: "unmatched-xxxx.firebaseapp.com",
-  databaseURL: "https://unmatched-xxxx-default-rtdb.firebaseio.com",
-  projectId: "unmatched-xxxx",
-  appId: "1:1234:web:abcd"
+  authDomain: "your-project.firebaseapp.com",
+  projectId: "your-project",
+  storageBucket: "your-project.appspot.com",
+  messagingSenderId: "1234567890",
+  appId: "1:1234567890:web:abcd"
 };
 ```
-`databaseURL` is the one from step b.4 (it isn't always in the config block). **Commit changes.**
 
 ### e. Check it
-Wait a minute, reload the site. The home screen should say **"Online rooms use Firebase"**. If it still says peer-to-peer, the config file has a typo or a `PASTE_` value left.
+Reload the site after a minute. The home screen should say **"Online rooms use Firebase"**.
 
-> The apiKey isn't a secret — Firebase web keys are meant to be public. The rules above only allow reading and writing game rooms.
+> Firebase web API keys are meant to be public. The rule above only opens the `unmatched_games` collection.
+> (Prefer Realtime Database? Add `databaseURL` and `realtime: true` to the config.)
 
 ## Playing online
 - **TV mode:** open the site on the TV and tap **📺 Use this screen as the TV table**. Each player opens the site on their phone, types the room code and taps **Join**.
@@ -79,8 +75,8 @@ Wait a minute, reload the site. The home screen should say **"Online rooms use F
 - Tap **📖 Quick rules** in the room for a rules summary and each hero's special rules.
 
 ## Housekeeping
-Old rooms stay in the database (each is small). To clear them: Realtime Database → Data → hover `unmatched/games` → 🗑.
-The free Spark plan (1 GB stored, 10 GB/month downloaded) is far more than a game group needs.
+Old rooms stay in Firestore (each is a small document). To clear them: Firestore Database → Data → `unmatched_games` → ⋮ → Delete collection.
+The free Spark plan (50k reads / 20k writes a day) covers roughly 10–15 full games a day; past that, Firestore just pauses writes until the next day (or switch on the pay-as-you-go plan, which costs pennies at this scale).
 
 ## Updating
 Upload the new `index.html` and `art-*.js` files over the old ones. **Don't overwrite your filled-in `firebase-config.js`** with the blank one from a new zip.

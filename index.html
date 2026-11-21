@@ -1461,12 +1461,39 @@ function makeFirebaseDB(cfg){
       return ()=>{o.subs=o.subs.filter(f=>f!==cb);if(!o.subs.length){o.ref.off('value');o.listening=false;}};}};}
   function localRef(path){const k='um_doc_'+path;return {async get(){return snap(LS(k));},async set(d){LSset(k,d);},async update(p){const d=LS(k)||{};deepMerge(d,p);LSset(k,d);},onSnapshot(cb){setTimeout(()=>cb(snap(LS(k))),0);return ()=>{};}};}
   return {kind:'firebase',doc:p=>isLocal(p)?localRef(p):sharedRef(p)};}
+function makeFirestoreDB(cfg){
+  const app=firebase.apps&&firebase.apps.length?firebase.app():firebase.initializeApp(cfg);const db=firebase.firestore(app);const COL=(cfg.collection||'unmatched_games');
+  const LS=k=>{try{return JSON.parse(localStorage.getItem(k)||'null');}catch(e){return null;}};const LSset=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}};
+  const isLocal=p=>/\/priv\/|^library\/|^data\//.test(p);const snap=d=>({exists:!!d,data:()=>clone(d)});
+  const parse=sn=>{if(!sn||!sn.exists)return null;const v=sn.data();try{return v&&typeof v.s==='string'?JSON.parse(v.s):null;}catch(e){return null;}};
+  const paths={};
+  function P(path){if(paths[path])return paths[path];const id=path.split('/').slice(1).join('_').replace(/[^A-Za-z0-9_-]/g,'_');const ref=db.collection(COL).doc(id);
+    const o={ref,last:null,pending:[],subs:[],q:Promise.resolve()};
+    o.view=()=>{let d=o.last?clone(o.last):null;for(const op of o.pending){if(op.set)d=clone(op.set);else{d=d||{};deepMerge(d,op.patch);}}return d;};
+    o.emit=()=>{const d=o.view();o.subs.forEach(f=>{try{f(snap(d));}catch(e){console.error(e);}});};
+    o.push=(op)=>{o.pending.push(op);o.q=o.q.then(async()=>{for(let tries=0;;tries++){try{
+        if(op.set){const str=JSON.stringify(op.set);await ref.set({s:str,t:Date.now()});o.last=clone(op.set);}
+        else{const nd=await db.runTransaction(async tx=>{const sn=await tx.get(ref);const d=parse(sn)||{};deepMerge(d,op.patch);tx.set(ref,{s:JSON.stringify(d),t:Date.now()});return d;});o.last=nd;}
+        break;}catch(e){console.warn('firestore write',e);if(tries===0)toast('Could not save a move ('+(e.code||e.message)+') — retrying…');await new Promise(r=>setTimeout(r,Math.min(8000,1000*(tries+1))));}}
+      o.pending=o.pending.filter(x=>x!==op);o.emit();});};
+    paths[path]=o;return o;}
+  function sharedRef(path){const o=P(path);return {
+    async get(){const sn=await o.ref.get();o.last=parse(sn);return snap(o.view());},
+    async set(data){o.push({set:clone(data)});},
+    async update(patch){o.push({patch:clone(patch)});},
+    onSnapshot(cb,err){o.subs.push(cb);if(!o.unsub){o.unsub=o.ref.onSnapshot(sn=>{if(sn.metadata&&sn.metadata.hasPendingWrites)return;o.last=parse(sn);o.emit();},e=>{if(err)err(e);});}else if(o.last||o.pending.length)setTimeout(()=>cb(snap(o.view())),0);
+      return ()=>{o.subs=o.subs.filter(f=>f!==cb);if(!o.subs.length&&o.unsub){o.unsub();o.unsub=null;}};}};}
+  function localRef(path){const k='um_doc_'+path;return {async get(){return snap(LS(k));},async set(d){LSset(k,d);},async update(p){const d=LS(k)||{};deepMerge(d,p);LSset(k,d);},onSnapshot(cb){setTimeout(()=>cb(snap(LS(k))),0);return ()=>{};}};}
+  return {kind:'firebase',doc:p=>isLocal(p)?localRef(p):sharedRef(p)};}
 const FB_VER='10.12.2';
 async function initStatic(){initStaticArt();
   try{if(!window.UNMATCHED_FIREBASE)await loadScript('firebase-config.js');}catch(e){}
   const fc=window.UNMATCHED_FIREBASE;
-  if(fc&&fc.databaseURL&&!/YOUR|PASTE/i.test(fc.databaseURL+fc.apiKey)){try{if(!window.firebase||!firebase.database){await loadScript(`https://www.gstatic.com/firebasejs/${FB_VER}/firebase-app-compat.js`);await loadScript(`https://www.gstatic.com/firebasejs/${FB_VER}/firebase-database-compat.js`);}
-      S.db=makeFirebaseDB(fc);return;}catch(e){console.warn('firebase',e);S.ui.err='Could not load Firebase — falling back to peer-to-peer rooms.';}}
+  if(fc&&fc.apiKey&&fc.projectId&&!/YOUR|PASTE/i.test(fc.apiKey+fc.projectId)){try{const rt=!!fc.realtime;
+      if(!window.firebase)await loadScript(`https://www.gstatic.com/firebasejs/${FB_VER}/firebase-app-compat.js`);
+      if(rt&&!firebase.database)await loadScript(`https://www.gstatic.com/firebasejs/${FB_VER}/firebase-database-compat.js`);
+      if(!rt&&!firebase.firestore)await loadScript(`https://www.gstatic.com/firebasejs/${FB_VER}/firebase-firestore-compat.js`);
+      S.db=rt?makeFirebaseDB(fc):makeFirestoreDB(fc);return;}catch(e){console.warn('firebase',e);S.ui.err='Could not load Firebase — falling back to peer-to-peer rooms.';}}
   try{if(!window.Peer)await loadScript('https://cdn.jsdelivr.net/npm/peerjs@1.5.4/dist/peerjs.min.js');}catch(e){console.warn('peerjs',e);}
   if(window.Peer)S.db=makePeerDB();}
 async function initCaps(){S.ui.loading=true;render();S.db=await getCap('db');const user=await getCap('user');

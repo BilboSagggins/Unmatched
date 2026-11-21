@@ -1,10 +1,11 @@
-// Firebase settings for Unmatched Online.
-// 1. Paste the values from your Firebase project (Project settings > Your apps > Web app > SDK setup and configuration > Config).
-// 2. databaseURL MUST be filled in (it comes from Realtime Database). Leave this file as-is to use peer-to-peer rooms instead.
+// Firebase settings for Unmatched Online (uses Cloud Firestore).
+// Paste the values from Firebase console > Project settings > Your apps > Web app > "SDK setup and configuration" > Config.
+// Leave the PASTE_ values in place to use peer-to-peer rooms instead.
 window.UNMATCHED_FIREBASE = {
   apiKey: "PASTE_API_KEY",
   authDomain: "PASTE_PROJECT_ID.firebaseapp.com",
-  databaseURL: "PASTE_DATABASE_URL",
   projectId: "PASTE_PROJECT_ID",
+  storageBucket: "PASTE_PROJECT_ID.appspot.com",
+  messagingSenderId: "PASTE_SENDER_ID",
   appId: "PASTE_APP_ID"
 };
