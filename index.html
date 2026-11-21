@@ -82,8 +82,8 @@ pre{background:#0f1520;border:1px solid var(--line);border-radius:8px;padding:8p
 .cd.off{opacity:.35;filter:grayscale(.7)}.pickgrid .cd[data-picked]{outline:3px solid var(--acc);outline-offset:2px;border-radius:12px}
 .btn:disabled{opacity:.4;cursor:not-allowed}.calc{background:#0f1520;border-radius:10px;padding:8px 10px;margin:8px 0;font-size:13.5px}.calc b{color:var(--acc)}.calc li{margin:2px 0}
 .boostchip{font-size:12px;text-align:center;margin-top:4px;color:var(--acc)}
-:root{--fh:150px;--cw:110px}
-@media (orientation:landscape) and (max-height:560px){:root{--fh:62px;--cw:70px}}
+:root{--cw:min(112px,24vw);--fh:calc(var(--cw)*1.397 + 26px)}
+@media (orientation:landscape) and (max-height:560px){:root{--cw:min(76px,18vh);--fh:calc(var(--cw)*1.397 + 24px)}}
 .wrap.game{max-width:560px;padding-bottom:calc(var(--fh) + 24px)}
 .fan{position:fixed;left:0;right:0;bottom:0;height:var(--fh);gap:0;padding:0;display:flex;justify-content:center;align-items:flex-end;pointer-events:none;z-index:15;
   background:linear-gradient(to bottom,rgba(11,15,23,0),rgba(11,15,23,.92) 35%);overflow:visible}
@@ -1732,8 +1732,8 @@ function renderGame(){if(isTV())return renderTV();const p=S.pub;const me=viewSea
   const shownChip=p.shown?`<button class="bchip" data-a="x_view" data-k="shown">▶ ${esc(seatName(p.shown.seat))} played <b>${esc(p.shown.card.name)}</b></button>`:'';
   const ongChips=Object.entries(p.ongoing||{}).filter(([k,c])=>c).map(([k,c])=>`<button class="bchip ong" data-a="x_view" data-k="ong_${k}">◆ Ongoing: <b>${esc(c.name)}</b></button>`).join('');
   const d=heroOf(me),od=heroOf(opp);
-  const hcs=pr?pr.hand:[];const nH=hcs.length;const cw=parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--cw'))||110;
-  const step=nH>1?Math.min(cw*0.78,(window.innerWidth-24-cw)/(nH-1)):0;const spread=Math.min(5,30/Math.max(1,nH));
+  const hcs=pr?pr.hand:[];const nH=hcs.length;const cw=matchMedia('(orientation:landscape) and (max-height:560px)').matches?Math.min(76,innerHeight*0.18):Math.min(112,innerWidth*0.24);
+  const step=nH>1?Math.min(cw*0.78,(window.innerWidth-56-cw)/(nH-1)):0;const spread=Math.min(5,30/Math.max(1,nH));
   const handCards=hcs.map((c,i)=>{const k=i-(nH-1)/2;const st=`--r:${(k*spread).toFixed(2)}deg;--y:${(k*k*1.6).toFixed(1)}px;--ov:${(step-cw).toFixed(1)}px;z-index:${i+1}`;
     let h=cardHtml(c,'card');h=h.replace(/style="/,`style="${st};`);return cardPlayable(c)?h:h.replace('class="cd','class="cd off');}).join('');
   const portrait=window.innerHeight>window.innerWidth;const ctrl=online()&&p.tv&&!S.ui.showBoard&&!needsBoard();const v3=!ctrl&&S.ui.view3d!==false&&window.THREE;
